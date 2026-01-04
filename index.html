@@ -397,7 +397,7 @@ Thực đơn 3 - 2 suất"></textarea>
             windowWidth: 1300
         }).then(canvas => {
             const link = document.createElement('a');
-            link.download = 'bao_cao_suat_an_' + new Date().toLocaleDateString('vi-VN').replace(/\//g,'-') + '.png';
+            link.download = 'bao_cao_suat_an_' + new Date().toLocaleDateString('vi-VN').replace(/\//g,'-') + '.jpeg';
             link.href = canvas.toDataURL('image/png');
             document.body.appendChild(link);
             link.click();
