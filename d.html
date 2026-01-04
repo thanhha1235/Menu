@@ -1,0 +1,834 @@
+<!DOCTYPE html>
+<html lang="vi" data-bs-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tool Báo Cáo Suất Ăn Thông Minh</title>
+    
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.3/font/bootstrap-icons.css">
+    
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --success-color: #27ae60;
+            --danger-color: #e74c3c;
+            --warning-color: #f39c12;
+            --info-color: #2980b9;
+            --light-bg: #f8f9fa;
+            --card-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+            --hover-shadow: 0 8px 25px rgba(0, 0, 0, 0.12);
+            --border-radius: 12px;
+            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        [data-bs-theme="dark"] {
+            --primary-color: #34495e;
+            --light-bg: #2c3e50;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
+            min-height: 100vh;
+            padding: 1.5rem;
+            color: var(--primary-color);
+        }
+
+        .main-card {
+            background: white;
+            border-radius: var(--border-radius);
+            box-shadow: var(--card-shadow);
+            border: none;
+            overflow: hidden;
+            transition: var(--transition);
+        }
+
+        [data-bs-theme="dark"] .main-card {
+            background: #34495e;
+            color: #ecf0f1;
+        }
+
+        .main-card:hover {
+            box-shadow: var(--hover-shadow);
+        }
+
+        .header-section {
+            background: linear-gradient(135deg, var(--primary-color) 0%, #1a2530 100%);
+            color: white;
+            padding: 2rem 1.5rem;
+            border-radius: var(--border-radius) var(--border-radius) 0 0;
+            margin-bottom: 1.5rem;
+        }
+
+        .header-section h1 {
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            font-size: 1.8rem;
+        }
+
+        .header-section .subtitle {
+            opacity: 0.9;
+            font-size: 0.95rem;
+        }
+
+        .input-section {
+            background: var(--light-bg);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+
+        [data-bs-theme="dark"] .input-section {
+            background: #2c3e50;
+            border-color: rgba(255,255,255,0.1);
+        }
+
+        .form-control {
+            border: 2px solid #e1e4e8;
+            border-radius: 8px;
+            padding: 1rem;
+            font-size: 0.95rem;
+            transition: var(--transition);
+            resize: vertical;
+            min-height: 200px;
+        }
+
+        [data-bs-theme="dark"] .form-control {
+            background: #3b4a5e;
+            border-color: #4a6278;
+            color: #ecf0f1;
+        }
+
+        .form-control:focus {
+            border-color: var(--secondary-color);
+            box-shadow: 0 0 0 0.25rem rgba(52, 152, 219, 0.2);
+        }
+
+        .btn {
+            border-radius: 8px;
+            padding: 0.75rem 1.5rem;
+            font-weight: 600;
+            transition: var(--transition);
+            border: none;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--secondary-color) 0%, #2980b9 100%);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, var(--success-color) 0%, #219653 100%);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, var(--danger-color) 0%, #c0392b 100%);
+        }
+
+        .btn-info {
+            background: linear-gradient(135deg, var(--info-color) 0%, #1f618d 100%);
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+        }
+
+        .table-container {
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+
+        [data-bs-theme="dark"] .table-container {
+            border-color: rgba(255,255,255,0.1);
+        }
+
+        .table {
+            margin-bottom: 0;
+            border-collapse: separate;
+            border-spacing: 0;
+        }
+
+        .table thead th {
+            background: linear-gradient(135deg, var(--primary-color) 0%, #1a2530 100%);
+            color: white;
+            font-weight: 600;
+            padding: 1rem;
+            border: none;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .table tbody tr {
+            transition: var(--transition);
+        }
+
+        .table tbody tr:hover {
+            background-color: rgba(52, 152, 219, 0.05);
+            transform: scale(1.001);
+        }
+
+        [data-bs-theme="dark"] .table tbody tr:hover {
+            background-color: rgba(52, 152, 219, 0.1);
+        }
+
+        .table tbody td {
+            padding: 0.85rem 1rem;
+            vertical-align: middle;
+            border-color: rgba(0,0,0,0.05);
+        }
+
+        [data-bs-theme="dark"] .table tbody td {
+            border-color: rgba(255,255,255,0.1);
+        }
+
+        .menu-name {
+            font-weight: 600;
+            color: var(--primary-color);
+            min-width: 180px;
+            position: sticky;
+            left: 0;
+            background: inherit;
+            z-index: 5;
+        }
+
+        [data-bs-theme="dark"] .menu-name {
+            color: #ecf0f1;
+        }
+
+        .total-cell {
+            background: linear-gradient(135deg, #fff3cd 0%, #ffeaa7 100%) !important;
+            color: #856404 !important;
+            font-weight: 700 !important;
+        }
+
+        [data-bs-theme="dark"] .total-cell {
+            background: linear-gradient(135deg, #856404 0%, #a17c1a 100%) !important;
+            color: #fff3cd !important;
+        }
+
+        .badge-count {
+            background: linear-gradient(135deg, var(--secondary-color) 0%, #2980b9 100%);
+            color: white;
+            padding: 0.35em 0.65em;
+            border-radius: 20px;
+            font-size: 0.75em;
+        }
+
+        .stats-card {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 10px;
+            padding: 1.25rem;
+            margin-bottom: 1rem;
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+
+        [data-bs-theme="dark"] .stats-card {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            border-color: rgba(255,255,255,0.1);
+        }
+
+        .tooltip-inner {
+            border-radius: 8px;
+            padding: 0.5rem 0.75rem;
+        }
+
+        .theme-toggle {
+            position: fixed;
+            bottom: 1.5rem;
+            right: 1.5rem;
+            z-index: 1000;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary-color) 0%, #1a2530 100%);
+            color: white;
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            transition: var(--transition);
+        }
+
+        .theme-toggle:hover {
+            transform: translateY(-3px) rotate(15deg);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.25);
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 1rem;
+            }
+            
+            .header-section {
+                padding: 1.5rem 1rem;
+            }
+            
+            .header-section h1 {
+                font-size: 1.5rem;
+            }
+            
+            .btn {
+                padding: 0.6rem 1rem;
+                font-size: 0.9rem;
+            }
+            
+            .table-responsive {
+                border-radius: 8px;
+            }
+            
+            .menu-name {
+                position: sticky;
+                left: 0;
+                background: inherit;
+                z-index: 5;
+            }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .highlight {
+            background-color: rgba(255, 235, 59, 0.2);
+            padding: 2px 4px;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row justify-content-center">
+            <div class="col-xxl-10 col-xl-11 col-lg-12">
+                <div class="main-card fade-in">
+                    <!-- Header -->
+                    <div class="header-section text-center">
+                        <h1><i class="bi bi-clipboard-data me-2"></i>Công Cụ Tổng Hợp Suất Ăn</h1>
+                        <p class="subtitle">Phiên bản chuyên nghiệp - Xử lý thông minh - Xuất báo cáo nhanh chóng</p>
+                    </div>
+
+                    <div class="card-body p-4">
+                        <!-- Stats Overview -->
+                        <div class="row mb-4">
+                            <div class="col-md-3 col-6">
+                                <div class="stats-card text-center">
+                                    <i class="bi bi-building display-6 text-primary mb-2"></i>
+                                    <h5 id="blockCount" class="mb-1">0</h5>
+                                    <small class="text-muted">Khối/Phòng ban</small>
+                                </div>
+                            </div>
+                            <div class="col-md-3 col-6">
+                                <div class="stats-card text-center">
+                                    <i class="bi bi-egg-fried display-6 text-success mb-2"></i>
+                                    <h5 id="dishCount" class="mb-1">0</h5>
+                                    <small class="text-muted">Loại thực đơn</small>
+                                </div>
+                            </div>
+                            <div class="col-md-3 col-6">
+                                <div class="stats-card text-center">
+                                    <i class="bi bi-calculator display-6 text-warning mb-2"></i>
+                                    <h5 id="totalMeals" class="mb-1">0</h5>
+                                    <small class="text-muted">Tổng suất ăn</small>
+                                </div>
+                            </div>
+                            <div class="col-md-3 col-6">
+                                <div class="stats-card text-center">
+                                    <i class="bi bi-database display-6 text-info mb-2"></i>
+                                    <h5 id="lastUpdate" class="mb-1">--</h5>
+                                    <small class="text-muted">Cập nhật cuối</small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Input Section -->
+                        <div class="input-section">
+                            <div class="row align-items-center mb-3">
+                                <div class="col-md-8">
+                                    <h5 class="mb-0"><i class="bi bi-input-cursor-text me-2"></i>Nhập dữ liệu báo cáo</h5>
+                                </div>
+                                <div class="col-md-4 text-end">
+                                    <span class="badge bg-info">Thông minh</span>
+                                    <span class="badge bg-success ms-2">Tự động</span>
+                                </div>
+                            </div>
+                            
+                            <div class="mb-3">
+                                <textarea id="inputText" class="form-control" 
+                                          placeholder="Dán báo cáo suất ăn vào đây (hỗ trợ nhiều định dạng)... Ví dụ:
+
+VPNH
+TD1 8
+TD2 4
+
+Khối Kỹ thuật
+Thực đơn 1: 5
+Thực đơn 3 - 2 suất
+
+Phòng Kinh doanh
+Menu A - 3 pax
+Menu B: 7 s"></textarea>
+                            </div>
+                            
+                            <div class="alert alert-info mb-0">
+                                <div class="d-flex">
+                                    <i class="bi bi-lightbulb fs-5 me-2"></i>
+                                    <div>
+                                        <strong>Mẹo nhập liệu thông minh:</strong>
+                                        <ul class="mb-0 mt-1 ps-3">
+                                            <li>Dòng <span class="highlight">không có số</span> → Tên <strong>Khối/Phòng ban</strong></li>
+                                            <li>Dòng <span class="highlight">có số ở cuối</span> → <strong>Thực đơn + Số lượng</strong></li>
+                                            <li>Hỗ trợ các từ khóa: suất, pax, s, suat (không phân biệt hoa thường)</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Action Buttons -->
+                        <div class="row g-3 mb-4">
+                            <div class="col-lg-3 col-md-6">
+                                <button class="btn btn-success w-100 d-flex align-items-center justify-content-center" 
+                                        onclick="processData()">
+                                    <i class="bi bi-arrow-down-circle me-2"></i>
+                                    <span>Cập nhật bảng</span>
+                                </button>
+                            </div>
+                            <div class="col-lg-3 col-md-6">
+                                <button class="btn btn-primary w-100 d-flex align-items-center justify-content-center"
+                                        onclick="exportTableAsImage()">
+                                    <i class="bi bi-file-earmark-image me-2"></i>
+                                    <span>Xuất ảnh báo cáo</span>
+                                </button>
+                            </div>
+                            <div class="col-lg-3 col-md-6">
+                                <button class="btn btn-info w-100 d-flex align-items-center justify-content-center"
+                                        onclick="exportToExcel()">
+                                    <i class="bi bi-file-earmark-excel me-2"></i>
+                                    <span>Xuất Excel</span>
+                                </button>
+                            </div>
+                            <div class="col-lg-3 col-md-6">
+                                <button class="btn btn-danger w-100 d-flex align-items-center justify-content-center"
+                                        onclick="resetData()">
+                                    <i class="bi bi-trash me-2"></i>
+                                    <span>Xóa dữ liệu</span>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Data Table -->
+                        <div class="mb-3">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <h5 class="mb-0"><i class="bi bi-table me-2"></i>Bảng tổng hợp suất ăn</h5>
+                                <div class="text-muted">
+                                    <small><span id="rowCount">0</span> hàng × <span id="colCount">0</span> cột</small>
+                                </div>
+                            </div>
+                            
+                            <div class="table-container">
+                                <div class="table-responsive">
+                                    <table id="mainTable" class="table table-hover mb-0">
+                                        <thead></thead>
+                                        <tbody></tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Install PWA Button (Hidden by default) -->
+                        <button id="btnInstall" class="btn btn-outline-primary w-100 mt-3" style="display:none;">
+                            <i class="bi bi-download me-2"></i>Cài đặt ứng dụng trên máy tính
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Theme Toggle Button -->
+    <button class="theme-toggle" id="themeToggle">
+        <i class="bi bi-moon-stars"></i>
+    </button>
+
+    <!-- Bootstrap JS Bundle -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- HTML2Canvas for image export -->
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+    <!-- SheetJS for Excel export -->
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+    
+    <script>
+        // Giữ nguyên toàn bộ logic JavaScript từ phiên bản cũ
+        let database = {};
+        let allDishes = new Set();
+        
+        // Thêm function để cập nhật thống kê
+        function updateStats() {
+            const blockCount = Object.keys(database).length;
+            const dishCount = allDishes.size;
+            let totalMeals = 0;
+            
+            // Tính tổng số suất ăn
+            Object.values(database).forEach(block => {
+                Object.values(block).forEach(qty => {
+                    totalMeals += qty;
+                });
+            });
+            
+            // Cập nhật UI
+            document.getElementById('blockCount').textContent = blockCount;
+            document.getElementById('dishCount').textContent = dishCount;
+            document.getElementById('totalMeals').textContent = totalMeals;
+            document.getElementById('lastUpdate').textContent = new Date().toLocaleTimeString('vi-VN');
+            
+            // Cập nhật thông tin bảng
+            const rowCount = blockCount + 1; // +1 cho dòng tổng
+            const colCount = dishCount + 2; // +1 cho cột tên, +1 cho cột tổng
+            document.getElementById('rowCount').textContent = rowCount;
+            document.getElementById('colCount').textContent = colCount;
+        }
+        
+        // Các function cũ (giữ nguyên logic)
+        function saveToLocal() {
+            try {
+                localStorage.setItem('setmenu_db', JSON.stringify(database));
+                localStorage.setItem('setmenu_dishes', JSON.stringify(Array.from(allDishes)));
+                localStorage.setItem('setmenu_last_save', new Date().toISOString());
+            } catch (e) {
+                console.warn('Lưu localStorage thất bại', e);
+            }
+        }
+
+        function loadFromLocal() {
+            try {
+                const db = localStorage.getItem('setmenu_db');
+                const dishes = localStorage.getItem('setmenu_dishes');
+                const lastSave = localStorage.getItem('setmenu_last_save');
+                
+                if (db) database = JSON.parse(db);
+                if (dishes) allDishes = new Set(JSON.parse(dishes));
+                
+                renderTable();
+                updateStats();
+                
+                // Cập nhật thời gian lưu cuối
+                if (lastSave) {
+                    document.getElementById('lastUpdate').textContent = 
+                        new Date(lastSave).toLocaleTimeString('vi-VN');
+                }
+            } catch (e) {
+                console.warn('Khôi phục localStorage thất bại', e);
+            }
+        }
+
+        function processData() {
+            const text = document.getElementById('inputText').value;
+            const lines = text.split('\n');
+            let currentBlock = "Chưa xác định";
+
+            lines.forEach(line => {
+                line = line.trim();
+                if (!line) return;
+
+                let match = line.match(/^(.*?)(?:[\s:\-=]+)?(\d+)\s*(?:suất|suat|pax|s)?\.?$/i);
+
+                if (match) {
+                    let dishName = match[1].trim();
+                    let quantity = parseInt(match[2]);
+
+                    dishName = dishName.replace(/[:\-=]+$/, '').trim();
+
+                    if(dishName.toLowerCase().startsWith('thực đơn')) {
+                        dishName = dishName.charAt(0).toUpperCase() + dishName.slice(1);
+                    }
+                    if(dishName.toLowerCase().startsWith('td')) {
+                        dishName = dishName.replace(/td/i, 'Thực đơn ');
+                    }
+
+                    if (dishName && quantity > 0) {
+                        if (!database[currentBlock]) database[currentBlock] = {};
+                        database[currentBlock][dishName] = quantity;
+                        allDishes.add(dishName);
+                    }
+
+                } else {
+                    let blockName = line.replace(/^(Khối|Khoi|Phòng|Ban|Team)\s*[:\.]?/i, '').replace(/[:\.]+$/, '').trim();
+                    if (blockName.length > 0) {
+                        currentBlock = blockName;
+                        if (!database[currentBlock]) database[currentBlock] = {};
+                    }
+                }
+            });
+
+            renderTable();
+            saveToLocal();
+            document.getElementById('inputText').value = '';
+            document.getElementById('inputText').focus();
+        }
+
+        function renderTable() {
+            const thead = document.querySelector('#mainTable thead');
+            const tbody = document.querySelector('#mainTable tbody');
+            
+            if (!allDishes.size && Object.keys(database).length === 0) {
+                thead.innerHTML = '';
+                tbody.innerHTML = '';
+                updateStats();
+                return;
+            }
+
+            let sortedDishes = Array.from(allDishes).sort((a, b) => 
+                a.localeCompare(b, undefined, { numeric: true, sensitivity: 'base' })
+            );
+
+            let blocks = Object.keys(database);
+
+            // Header
+            let headerHtml = '<tr><th class="menu-name">Khối / Thực đơn</th>';
+            sortedDishes.forEach(dish => {
+                headerHtml += `<th>${dish}</th>`;
+            });
+            headerHtml += '<th class="total-cell">Tổng</th></tr>';
+            thead.innerHTML = headerHtml;
+
+            // Body
+            let totalsByDish = new Array(sortedDishes.length).fill(0);
+            let grandTotal = 0;
+            let bodyHtml = '';
+            
+            blocks.forEach(block => {
+                let rowHtml = `<tr><td class="menu-name fw-bold">${block}</td>`;
+                let rowTotal = 0;
+
+                sortedDishes.forEach((dish, idx) => {
+                    let qty = (database[block] && database[block][dish]) ? database[block][dish] : 0;
+                    rowHtml += `<td>${qty > 0 ? `<span class="badge-count">${qty}</span>` : '-'}</td>`;
+                    rowTotal += qty;
+                    totalsByDish[idx] += qty;
+                });
+
+                rowHtml += `<td class="total-cell fw-bold">${rowTotal}</td></tr>`;
+                bodyHtml += rowHtml;
+                grandTotal += rowTotal;
+            });
+
+            // Total row
+            let totalRow = '<tr><td class="menu-name total-cell fw-bold">Tổng cộng</td>';
+            totalsByDish.forEach(t => {
+                totalRow += `<td class="total-cell fw-bold">${t > 0 ? t : '-'}</td>`;
+            });
+            totalRow += `<td class="total-cell fw-bold">${grandTotal}</td></tr>`;
+
+            tbody.innerHTML = bodyHtml + totalRow;
+            updateStats();
+        }
+
+        function resetData() {
+            if(confirm('Bạn có chắc chắn muốn xóa toàn bộ dữ liệu?')) {
+                database = {};
+                allDishes = new Set();
+                localStorage.removeItem('setmenu_db');
+                localStorage.removeItem('setmenu_dishes');
+                localStorage.removeItem('setmenu_last_save');
+                renderTable();
+            }
+        }
+
+        function exportTableAsImage() {
+            const tableContainer = document.querySelector('.table-container');
+            
+            // Tạo thông báo loading
+            const originalButton = event.target.closest('button');
+            const originalHTML = originalButton.innerHTML;
+            originalButton.innerHTML = '<i class="bi bi-hourglass-split me-2"></i>Đang xử lý...';
+            originalButton.disabled = true;
+            
+            html2canvas(tableContainer, {
+                backgroundColor: null,
+                scale: 2,
+                useCORS: true,
+                logging: false
+            }).then(canvas => {
+                const link = document.createElement('a');
+                link.download = `bao_cao_suat_an_${new Date().toLocaleDateString('vi-VN').replace(/\//g,'-')}.png`;
+                link.href = canvas.toDataURL('image/png');
+                document.body.appendChild(link);
+                link.click();
+                setTimeout(() => {
+                    document.body.removeChild(link);
+                    originalButton.innerHTML = originalHTML;
+                    originalButton.disabled = false;
+                    
+                    // Hiển thị thông báo thành công
+                    const alertDiv = document.createElement('div');
+                    alertDiv.className = 'alert alert-success alert-dismissible fade show position-fixed';
+                    alertDiv.style.cssText = 'top: 20px; right: 20px; z-index: 1000;';
+                    alertDiv.innerHTML = `
+                        <i class="bi bi-check-circle me-2"></i>
+                        <strong>Thành công!</strong> Ảnh đã được tải xuống.
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    `;
+                    document.body.appendChild(alertDiv);
+                    setTimeout(() => alertDiv.remove(), 3000);
+                }, 100);
+            }).catch(error => {
+                console.error('Lỗi xuất ảnh:', error);
+                originalButton.innerHTML = originalHTML;
+                originalButton.disabled = false;
+            });
+        }
+        
+        function exportToExcel() {
+            if (!allDishes.size && Object.keys(database).length === 0) {
+                alert('Không có dữ liệu để xuất!');
+                return;
+            }
+            
+            try {
+                // Tạo workbook và worksheet
+                const wb = XLSX.utils.book_new();
+                const wsData = [];
+                
+                // Tạo header
+                let sortedDishes = Array.from(allDishes).sort((a, b) => 
+                    a.localeCompare(b, undefined, { numeric: true, sensitivity: 'base' })
+                );
+                
+                const headers = ['Khối / Thực đơn', ...sortedDishes, 'Tổng'];
+                wsData.push(headers);
+                
+                // Thêm dữ liệu
+                Object.keys(database).forEach(block => {
+                    const row = [block];
+                    let rowTotal = 0;
+                    
+                    sortedDishes.forEach(dish => {
+                        const qty = database[block][dish] || 0;
+                        row.push(qty);
+                        rowTotal += qty;
+                    });
+                    
+                    row.push(rowTotal);
+                    wsData.push(row);
+                });
+                
+                // Thêm dòng tổng
+                const totalRow = ['Tổng cộng'];
+                let grandTotal = 0;
+                
+                sortedDishes.forEach((dish, idx) => {
+                    let dishTotal = 0;
+                    Object.keys(database).forEach(block => {
+                        dishTotal += database[block][dish] || 0;
+                    });
+                    totalRow.push(dishTotal);
+                    grandTotal += dishTotal;
+                });
+                totalRow.push(grandTotal);
+                wsData.push(totalRow);
+                
+                // Tạo worksheet
+                const ws = XLSX.utils.aoa_to_sheet(wsData);
+                
+                // Định dạng cột
+                const wscols = [
+                    { wch: 25 }, // Cột tên khối
+                    ...sortedDishes.map(() => ({ wch: 15 })), // Các cột món ăn
+                    { wch: 10 } // Cột tổng
+                ];
+                ws['!cols'] = wscols;
+                
+                // Thêm worksheet vào workbook
+                XLSX.utils.book_append_sheet(wb, ws, 'BaoCaoSuatAn');
+                
+                // Xuất file
+                const fileName = `Bao_Cao_Suat_An_${new Date().toLocaleDateString('vi-VN').replace(/\//g,'-')}.xlsx`;
+                XLSX.writeFile(wb, fileName);
+                
+            } catch (error) {
+                console.error('Lỗi xuất Excel:', error);
+                alert('Có lỗi xảy ra khi xuất file Excel!');
+            }
+        }
+
+        // Theme Toggle
+        document.getElementById('themeToggle').addEventListener('click', () => {
+            const currentTheme = document.documentElement.getAttribute('data-bs-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-bs-theme', newTheme);
+            
+            const icon = document.querySelector('#themeToggle i');
+            icon.className = newTheme === 'dark' ? 'bi bi-sun' : 'bi bi-moon-stars';
+            
+            // Lưu theme preference
+            localStorage.setItem('preferredTheme', newTheme);
+        });
+
+        // Khởi tạo theme từ localStorage
+        const preferredTheme = localStorage.getItem('preferredTheme') || 'light';
+        document.documentElement.setAttribute('data-bs-theme', preferredTheme);
+        const icon = document.querySelector('#themeToggle i');
+        icon.className = preferredTheme === 'dark' ? 'bi bi-sun' : 'bi bi-moon-stars';
+
+        // Load dữ liệu khi trang được tải
+        window.addEventListener('DOMContentLoaded', loadFromLocal);
+
+        // PWA Installation
+        let deferredInstallPrompt = null;
+        const btnInstall = document.getElementById('btnInstall');
+
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredInstallPrompt = e;
+            if (!localStorage.getItem('setmenu_installed')) {
+                btnInstall.style.display = 'block';
+            }
+        });
+
+        btnInstall && btnInstall.addEventListener('click', async () => {
+            if (!deferredInstallPrompt) return;
+            deferredInstallPrompt.prompt();
+            const choice = await deferredInstallPrompt.userChoice;
+            if (choice && choice.outcome === 'accepted') {
+                localStorage.setItem('setmenu_installed', '1');
+                btnInstall.style.display = 'none';
+            }
+            deferredInstallPrompt = null;
+        });
+
+        window.addEventListener('appinstalled', (evt) => {
+            localStorage.setItem('setmenu_installed', '1');
+            btnInstall.style.display = 'none';
+        });
+
+        // Service Worker Registration
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('service-worker.js')
+                .then(reg => console.log('SW registered:', reg))
+                .catch(err => console.warn('SW register failed:', err));
+        }
+
+        // Tooltip initialization
+        const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+        const tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl);
+        });
+    </script>
+</body>
+</html>
