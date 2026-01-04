@@ -66,7 +66,7 @@
         </div>
     </div>
     <div class="row g-3 align-items-start mb-3">
-        <div class="col-lg-8">
+        <div class="col-lg-8 position-relative">
             <textarea id="inputText" class="form-control shadow-sm" rows="7" placeholder="Dán báo cáo vào đây. Ví dụ:
 
 VPNH
@@ -76,6 +76,12 @@ TD2 4
 Khối KHCN
 Thực đơn 1: 5
 Thực đơn 3 - 2 suất"></textarea>
+            <button type="button"
+                class="btn btn-secondary btn-sm position-absolute top-0 end-0 m-2 btn-animate"
+                style="z-index:2;"
+                onclick="pasteFromClipboard()">
+                <i class="bi bi-clipboard"></i> Dán nhanh
+            </button>
         </div>
         <div class="col-lg-4 d-flex flex-lg-column flex-row gap-2">
             <button class="btn btn-success btn-lg btn-animate shadow-sm flex-fill" onclick="processData()">
@@ -451,6 +457,21 @@ Thực đơn 3 - 2 suất"></textarea>
         navigator.serviceWorker.register('service-worker.js')
             .then(reg => { /* đăng ký thành công */ })
             .catch(err => { console.warn('SW register failed', err); });
+    }
+
+    async function pasteFromClipboard() {
+        const textarea = document.getElementById('inputText');
+        if (navigator.clipboard && window.isSecureContext) {
+            try {
+                const text = await navigator.clipboard.readText();
+                textarea.value = text;
+                textarea.focus();
+            } catch (e) {
+                alert('Không thể dán từ clipboard. Hãy cấp quyền hoặc thử lại.');
+            }
+        } else {
+            alert('Trình duyệt không hỗ trợ dán nhanh.');
+        }
     }
 </script>
 
